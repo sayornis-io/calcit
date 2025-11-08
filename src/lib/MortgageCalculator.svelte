@@ -1,6 +1,10 @@
 <script lang="ts">
-  import { formatCurrency, formatCurrencyDetailed, formatPercent } from '../utils/formatters';
-  import AmortizationTable from './AmortizationTable.svelte';
+  import {
+    formatCurrency,
+    formatCurrencyDetailed,
+    formatPercent,
+  } from "../utils/formatters";
+  import AmortizationTable from "./AmortizationTable.svelte";
 
   let loanAmount = $state(640000);
   let interestRate = $state(5.6);
@@ -29,27 +33,25 @@
       ? (principal *
           monthlyInterestRate *
           Math.pow(1 + monthlyInterestRate, numberOfPayments)) /
-        (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
-      : 0
+          (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
+      : 0,
   );
 
   let annualPropertyTax = $derived(
-    isPropertyTaxFixed
-      ? propertyTax
-      : (loanAmount * propertyTaxPercent) / 100
+    isPropertyTaxFixed ? propertyTax : (loanAmount * propertyTaxPercent) / 100,
   );
   let monthlyPropertyTax = $derived(annualPropertyTax / 12);
   let monthlyInsurance = $derived(homeInsurance / 12);
   let totalMonthlyPayment = $derived(
     monthlyPrincipalInterest +
-    monthlyPropertyTax +
-    monthlyInsurance +
-    pmi +
-    hoa
+      monthlyPropertyTax +
+      monthlyInsurance +
+      pmi +
+      hoa,
   );
 
   let totalInterestPaid = $derived(
-    monthlyPrincipalInterest * numberOfPayments - principal
+    monthlyPrincipalInterest * numberOfPayments - principal,
   );
   let totalPaid = $derived(totalMonthlyPayment * numberOfPayments);
 
@@ -363,4 +365,10 @@
     </div>
   </div>
 </div>
-<AmortizationTable {amortizationSchedule} />
+<div class="w-full md:px-4 py-8 pb-8">
+  <div class="md:bg-white md:rounded-xl md:shadow-lg overflow-hidden">
+    <div class="md:p-8">
+      <AmortizationTable {amortizationSchedule} />
+    </div>
+  </div>
+</div>
