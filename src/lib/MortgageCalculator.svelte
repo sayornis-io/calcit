@@ -1,16 +1,17 @@
 <script lang="ts">
   import { formatCurrency, formatCurrencyDetailed, formatPercent } from '../utils/formatters';
+  import AmortizationTable from './AmortizationTable.svelte';
 
-  let loanAmount = $state(650000);
-  let interestRate = $state(5.8);
+  let loanAmount = $state(640000);
+  let interestRate = $state(5.6);
   let loanTerm = $state(30);
   let downPayment = $state(100000);
-  let propertyTax = $state(6500);
+  let propertyTax = $state(6400);
   let propertyTaxPercent = $state(1.17);
   let isPropertyTaxFixed = $state(false);
   let homeInsurance = $state(3000);
   let pmi = $state(0);
-  let hoa = $state(200);
+  let hoa = $state(277);
 
   // Ensure down payment never exceeds loan amount
   $effect(() => {
@@ -51,6 +52,27 @@
     monthlyPrincipalInterest * numberOfPayments - principal
   );
   let totalPaid = $derived(totalMonthlyPayment * numberOfPayments);
+
+  let amortizationSchedule = $derived.by(() => {
+    const schedule = [];
+    let balance = principal;
+
+    for (let i = 1; i <= numberOfPayments; i++) {
+      const interestPayment = balance * monthlyInterestRate;
+      const principalPayment = monthlyPrincipalInterest - interestPayment;
+      balance -= principalPayment;
+
+      schedule.push({
+        month: i,
+        payment: monthlyPrincipalInterest,
+        principal: principalPayment,
+        interest: interestPayment,
+        balance: Math.max(0, balance),
+      });
+    }
+
+    return schedule;
+  });
 </script>
 
 <div class="w-full max-w-7xl mx-auto md:px-4 md:py-8 pb-8">
@@ -341,3 +363,4 @@
     </div>
   </div>
 </div>
+<AmortizationTable {amortizationSchedule} />
