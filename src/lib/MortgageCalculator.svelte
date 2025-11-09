@@ -127,7 +127,7 @@
               type="number"
               inputmode="numeric"
               bind:value={loanAmount}
-              class="w-32 pl-2 border border-gray-300 bg-white rounded text-right"
+              class="w-32 px-2 border border-gray-300 bg-white rounded text-right"
             />
           </span>
         </label>
@@ -155,7 +155,7 @@
               type="number"
               inputmode="numeric"
               bind:value={downPayment}
-              class="w-32 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-32 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -185,7 +185,7 @@
             inputmode="decimal"
             step="0.1"
             bind:value={interestRate}
-            class="w-18 pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
+            class="w-18 px-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
           />
         </label>
         <input
@@ -255,7 +255,7 @@
                 type="number"
                 inputmode="numeric"
                 bind:value={propertyTax}
-                class="w-24 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-24 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
               />
             </span>
           </label>
@@ -305,7 +305,7 @@
               type="number"
               inputmode="numeric"
               bind:value={homeInsurance}
-              class="w-24 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-24 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -332,7 +332,7 @@
               type="number"
               inputmode="numeric"
               bind:value={hoa}
-              class="w-20 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-20 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -360,7 +360,7 @@
                 type="number"
                 inputmode="numeric"
                 bind:value={pmi}
-                class="w-20 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-20 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
               />
             </span>
           </label>
