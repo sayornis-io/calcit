@@ -9,7 +9,7 @@
   let loanAmount = $state(640000);
   let interestRate = $state(5.6);
   let loanTerm = $state(30);
-  let downPayment = $state(100000);
+  let downPayment = $state(40000);
   let propertyTax = $state(6400);
   let propertyTaxPercent = $state(1.17);
   let isPropertyTaxFixed = $state(false);
@@ -53,7 +53,7 @@
   let totalInterestPaid = $derived(
     monthlyPrincipalInterest * numberOfPayments - principal,
   );
-  let totalPaid = $derived(totalMonthlyPayment * numberOfPayments);
+  let totalPaid = $derived(monthlyPrincipalInterest * numberOfPayments);
 
   let amortizationSchedule = $derived.by(() => {
     const schedule = [];
@@ -91,8 +91,14 @@
         >
           <span class="text-base">Home Price</span>
           <span class="font-semibold text-gray-900"
-            >{formatCurrency(loanAmount)}</span
-          >
+            >$
+            <input
+              id="loan-amount-input"
+              type="number"
+              bind:value={loanAmount}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded"
+            />
+          </span>
         </label>
         <input
           id="loan-amount"
@@ -101,7 +107,7 @@
           max="2000000"
           step="10000"
           bind:value={loanAmount}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
 
@@ -112,8 +118,14 @@
         >
           <span class="text-base">Down Payment</span>
           <span class="font-semibold text-gray-900"
-            >{formatCurrency(downPayment)}</span
-          >
+            >$
+            <input
+              id="down-payment-input"
+              type="number"
+              bind:value={downPayment}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+            />
+          </span>
         </label>
         <input
           id="down-payment"
@@ -122,7 +134,7 @@
           max={loanAmount}
           step="5000"
           bind:value={downPayment}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
         <div class="text-sm text-gray-500 mt-1">
           {((downPayment / loanAmount) * 100).toFixed(1)}% of home price
@@ -134,10 +146,14 @@
           for="interest-rate"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Interest Rate</span>
-          <span class="font-semibold text-gray-900"
-            >{formatPercent(interestRate)}</span
-          >
+          <span class="text-base">Interest Rate (%)</span>
+            <input
+              id="interest-rate-input"
+              type="number"
+              step="0.1"
+              bind:value={interestRate}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
+            />
         </label>
         <input
           id="interest-rate"
@@ -146,7 +162,7 @@
           max="12"
           step="0.1"
           bind:value={interestRate}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
 
@@ -165,7 +181,7 @@
           max="30"
           step="5"
           bind:value={loanTerm}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
 
@@ -200,8 +216,14 @@
           >
             <span class="text-base text-gray-600">Annual Amount</span>
             <span class="font-semibold text-gray-900"
-              >{formatCurrency(propertyTax)}</span
-            >
+              >$
+              <input
+                id="property-tax-fixed-input"
+                type="number"
+                bind:value={propertyTax}
+                class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              />
+            </span>
           </label>
           <input
             id="property-tax-fixed"
@@ -210,7 +232,7 @@
             max="20000"
             step="100"
             bind:value={propertyTax}
-            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
         {:else}
           <label
@@ -231,7 +253,7 @@
             max="5"
             step="0.01"
             bind:value={propertyTaxPercent}
-            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
         {/if}
       </div>
@@ -243,8 +265,14 @@
         >
           <span class="text-lg">Annual Home Insurance</span>
           <span class="font-semibold text-gray-900"
-            >{formatCurrency(homeInsurance)}</span
-          >
+            >$
+            <input
+              id="home-insurance-input"
+              type="number"
+              bind:value={homeInsurance}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+            />
+          </span>
         </label>
         <input
           id="home-insurance"
@@ -253,7 +281,7 @@
           max="10000"
           step="100"
           bind:value={homeInsurance}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
 
@@ -263,7 +291,15 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Monthly PMI</span>
-          <span class="font-semibold text-gray-900">{formatCurrency(pmi)}</span>
+          <span class="font-semibold text-gray-900"
+            >$
+            <input
+              id="pmi-input"
+              type="number"
+              bind:value={pmi}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+            />
+          </span>
         </label>
         <input
           id="pmi"
@@ -272,7 +308,7 @@
           max="2000"
           step="1"
           bind:value={pmi}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
 
@@ -282,7 +318,15 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Monthly HOA</span>
-          <span class="font-semibold text-gray-900">{formatCurrency(hoa)}</span>
+          <span class="font-semibold text-gray-900"
+            >$
+            <input
+              id="hoa-input"
+              type="number"
+              bind:value={hoa}
+              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+            />
+          </span>
         </label>
         <input
           id="hoa"
@@ -291,7 +335,7 @@
           max="2000"
           step="1"
           bind:value={hoa}
-          class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
     </div>
@@ -361,11 +405,9 @@
             >{formatCurrency(totalPaid)}</span
           >
         </div>
-                <div class="flex justify-between py-3">
+        <div class="flex justify-between py-3">
           <span class="text-gray-600 text-lg">Total Payments</span>
-          <span class="font-semibold text-gray-900"
-            >{numberOfPayments}</span
-          >
+          <span class="font-semibold text-gray-900">{numberOfPayments}</span>
         </div>
       </div>
     </div>
