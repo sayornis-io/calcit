@@ -12,8 +12,8 @@
   let active = $state(0)
 </script>
 
-<main class="bg-gray-700 min-h-screen">
-  <div class="max-w-7xl mx-auto px-4 py-8">
+<main class="bg-gray-100 min-h-screen">
+  <div class="mx-auto px-4 py-8">
     <div class="flex gap-2 mb-8">
       {#each calculators as calc, i}
         <button

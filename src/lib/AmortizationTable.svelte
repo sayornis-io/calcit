@@ -28,7 +28,7 @@
 </script>
 
 <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-semibold text-gray-800">Amortization Schedule</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 pr-4">Amortization Schedule</h2>
     {#if years.length > 0}
         <div class="flex items-center gap-2">
             <label for="year-select" class="text-sm font-medium text-gray-700"

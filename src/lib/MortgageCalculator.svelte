@@ -77,9 +77,9 @@
   });
 </script>
 
-<div class="w-full max-w-7xl mx-auto md:px-4 md:py-8 pb-8">
+<div class="w-full max-w-7xl mx-auto lg:px-4 md:py-8 pb-8">
   <div
-    class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-xl shadow-lg"
+    class="md:bg-white grid grid-cols-1 md:grid-cols-2 gap-8 md:p-8 md:rounded-xl md:shadow-lg"
   >
     <div>
       <h2 class="text-2xl font-semibold mb-6 text-gray-800">Loan Details</h2>
@@ -169,13 +169,13 @@
         />
       </div>
 
-      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-800">
+      <h3 class="text-2xl font-semibold mt-8 mb-6 text-gray-800">
         Additional Costs
       </h3>
 
       <div class="mb-6">
         <div class="flex justify-between items-center mb-3">
-          <label for="property-tax" class="font-medium text-gray-700 text-base">
+          <label for="property-tax" class="font-medium text-gray-700 text-lg">
             Annual Property Tax
           </label>
           <label class="inline-flex items-center cursor-pointer">
@@ -198,7 +198,7 @@
             for="property-tax-fixed"
             class="flex justify-between items-center mb-2 font-medium text-gray-700"
           >
-            <span class="text-sm text-gray-600">Annual Amount</span>
+            <span class="text-base text-gray-600">Annual Amount</span>
             <span class="font-semibold text-gray-900"
               >{formatCurrency(propertyTax)}</span
             >
@@ -217,7 +217,7 @@
             for="property-tax-percent"
             class="flex justify-between items-center mb-2 font-medium text-gray-700"
           >
-            <span class="text-sm text-gray-600">Tax Rate</span>
+            <span class="text-base text-gray-600">Tax Rate</span>
             <span class="font-semibold text-gray-900"
               >{formatPercent(propertyTaxPercent)} ({formatCurrency(
                 annualPropertyTax,
@@ -241,7 +241,7 @@
           for="home-insurance"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Annual Home Insurance</span>
+          <span class="text-lg">Annual Home Insurance</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrency(homeInsurance)}</span
           >
@@ -262,7 +262,7 @@
           for="pmi"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Monthly PMI</span>
+          <span class="text-lg">Monthly PMI</span>
           <span class="font-semibold text-gray-900">{formatCurrency(pmi)}</span>
         </label>
         <input
@@ -281,7 +281,7 @@
           for="hoa"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Monthly HOA</span>
+          <span class="text-lg">Monthly HOA</span>
           <span class="font-semibold text-gray-900">{formatCurrency(hoa)}</span>
         </label>
         <input
@@ -297,35 +297,35 @@
     </div>
 
     <div class="sticky top-8 h-fit">
-      <h2 class="text-2xl font-semibold mb-6 text-gray-800 text-center">
+      <h2 class="text-3xl font-semibold mb-5 text-gray-800 text-center">
         Monthly Payment
       </h2>
       <div class="text-5xl font-bold text-green-600 mb-8 text-center">
         {formatCurrencyDetailed(totalMonthlyPayment)}
       </div>
 
-      <div class="border border-gray-200 rounded-lg p-4 mb-8">
+      <div class="border bg-white border-gray-200 rounded-lg p-4 mb-8">
         <div class="flex justify-between py-3 border-b border-gray-100">
-          <span class="text-gray-600 text-base">Principal & Interest</span>
+          <span class="text-gray-600 text-lg">Principal & Interest</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyPrincipalInterest)}</span
           >
         </div>
         <div class="flex justify-between py-3 border-b border-gray-100">
-          <span class="text-gray-600 text-base">Property Tax</span>
+          <span class="text-gray-600 text-lg">Property Tax</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyPropertyTax)}</span
           >
         </div>
         <div class="flex justify-between py-3 border-b border-gray-100">
-          <span class="text-gray-600 text-base">Home Insurance</span>
+          <span class="text-gray-600 text-lg">Home Insurance</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyInsurance)}</span
           >
         </div>
         {#if pmi > 0}
           <div class="flex justify-between py-3">
-            <span class="text-gray-600 text-base">PMI</span>
+            <span class="text-gray-600 text-lg">PMI</span>
             <span class="font-semibold text-gray-900"
               >{formatCurrencyDetailed(pmi)}</span
             >
@@ -333,7 +333,7 @@
         {/if}
         {#if hoa > 0}
           <div class="flex justify-between py-3">
-            <span class="text-gray-600 text-base">HOA</span>
+            <span class="text-gray-600 text-lg">HOA</span>
             <span class="font-semibold text-gray-900"
               >{formatCurrencyDetailed(hoa)}</span
             >
@@ -341,31 +341,37 @@
         {/if}
       </div>
 
-      <h3 class="text-xl font-semibold mb-4 text-gray-800">Loan Summary</h3>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="flex justify-between py-3">
-          <span class="text-gray-600 text-base">Loan Amount</span>
+      <h3 class="text-2xl font-semibold mb-6 text-gray-800">Loan Summary</h3>
+      <div class="border bg-white border-gray-200 rounded-lg p-4 mb-8">
+        <div class="flex justify-between py-3 border-b border-gray-100">
+          <span class="text-gray-600 text-lg">Loan Amount</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrency(principal)}</span
           >
         </div>
         <div class="flex justify-between py-3">
-          <span class="text-gray-600 text-base">Total Interest</span>
+          <span class="text-gray-600 text-lg">Total Interest</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrency(totalInterestPaid)}</span
           >
         </div>
         <div class="flex justify-between py-3">
-          <span class="text-gray-600 text-base">Total Paid</span>
+          <span class="text-gray-600 text-lg">Total Paid</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrency(totalPaid)}</span
+          >
+        </div>
+                <div class="flex justify-between py-3">
+          <span class="text-gray-600 text-lg">Total Payments</span>
+          <span class="font-semibold text-gray-900"
+            >{numberOfPayments}</span
           >
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="w-full md:px-4 py-8 pb-8">
+<div class="w-full lg:px-4 py-8 pb-8">
   <div class="md:bg-white md:rounded-xl md:shadow-lg overflow-hidden">
     <div class="md:p-8">
       <AmortizationTable {amortizationSchedule} />
