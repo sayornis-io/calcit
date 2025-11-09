@@ -31,13 +31,13 @@
     <h2 class="text-2xl font-semibold text-gray-800 pr-4">Amortization Schedule</h2>
     {#if years.length > 0}
         <div class="flex items-center gap-2">
-            <label for="year-select" class="text-sm font-medium text-gray-700"
+            <label for="year-select" class="text-base font-medium text-gray-700"
                 >Year:</label
             >
             <select
                 id="year-select"
                 bind:value={selectedYear}
-                class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="px-2 py-1 bg-white border border-gray-300 rounded-lg text-base"
             >
                 {#each years as year (year)}
                     <option value={year}>{year}</option>
@@ -52,23 +52,23 @@
         <thead>
             <tr class="border-b-2 border-gray-300 bg-gray-50">
                 <th
-                    class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
+                    class="px-4 py-3 text-left text-base font-semibold text-gray-700"
                     >Month</th
                 >
                 <th
-                    class="px-4 py-3 text-right text-sm font-semibold text-gray-700"
+                    class="px-4 py-3 text-right text-base font-semibold text-gray-700"
                     >Payment</th
                 >
                 <th
-                    class="px-4 py-3 text-right text-sm font-semibold text-gray-700"
+                    class="px-4 py-3 text-right text-base font-semibold text-gray-700"
                     >Principal</th
                 >
                 <th
-                    class="px-4 py-3 text-right text-sm font-semibold text-gray-700"
+                    class="px-4 py-3 text-right text-base font-semibold text-gray-700"
                     >Interest</th
                 >
                 <th
-                    class="px-4 py-3 text-right text-sm font-semibold text-gray-700"
+                    class="px-4 py-3 text-right text-base font-semibold text-gray-700"
                     >Balance</th
                 >
             </tr>

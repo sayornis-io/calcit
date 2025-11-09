@@ -55,6 +55,35 @@
   );
   let totalPaid = $derived(monthlyPrincipalInterest * numberOfPayments);
 
+  // Calculate current LTV (Loan-to-Value)
+  let currentLTV = $derived(principal / loanAmount);
+
+  // Check if PMI is currently applicable (LTV > 80%)
+  let isPMIApplicable = $derived(currentLTV > 0.8);
+
+  // Calculate when PMI stops (at 78% LTV or lower)
+  let monthPMIStops = $derived.by(() => {
+    if (pmi === 0 || !isPMIApplicable) return 0;
+
+    let balance = principal;
+    const initialLTV = principal / loanAmount;
+
+    // If already at 78% LTV or lower, PMI doesn't apply
+    if (initialLTV <= 0.78) return 0;
+
+    for (let i = 1; i <= numberOfPayments; i++) {
+      const interestPayment = balance * monthlyInterestRate;
+      const principalPayment = monthlyPrincipalInterest - interestPayment;
+      balance -= principalPayment;
+
+      const ltv = balance / loanAmount;
+      if (ltv <= 0.78) {
+        return i;
+      }
+    }
+    return numberOfPayments; // PMI for full term if never reaches 78% LTV
+  });
+
   let amortizationSchedule = $derived.by(() => {
     const schedule = [];
     let balance = principal;
@@ -89,7 +118,7 @@
           for="loan-amount"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Home Price</span>
+          <span class="text-lg">Home Price</span>
           <span class="font-semibold text-gray-900"
             >$
             <input
@@ -116,7 +145,7 @@
           for="down-payment"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Down Payment</span>
+          <span class="text-lg">Down Payment</span>
           <span class="font-semibold text-gray-900"
             >$
             <input
@@ -146,14 +175,14 @@
           for="interest-rate"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Interest Rate (%)</span>
-            <input
-              id="interest-rate-input"
-              type="number"
-              step="0.1"
-              bind:value={interestRate}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
-            />
+          <span class="text-lg">Interest Rate (%)</span>
+          <input
+            id="interest-rate-input"
+            type="number"
+            step="0.1"
+            bind:value={interestRate}
+            class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
+          />
         </label>
         <input
           id="interest-rate"
@@ -171,7 +200,7 @@
           for="loan-term"
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
-          <span class="text-base">Loan Term</span>
+          <span class="text-lg">Loan Term</span>
           <span class="font-semibold text-gray-900">{loanTerm} years</span>
         </label>
         <input
@@ -284,34 +313,6 @@
           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
-
-      <div class="mb-6">
-        <label
-          for="pmi"
-          class="flex justify-between items-center mb-2 font-medium text-gray-700"
-        >
-          <span class="text-lg">Monthly PMI</span>
-          <span class="font-semibold text-gray-900"
-            >$
-            <input
-              id="pmi-input"
-              type="number"
-              bind:value={pmi}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
-            />
-          </span>
-        </label>
-        <input
-          id="pmi"
-          type="range"
-          min="0"
-          max="2000"
-          step="1"
-          bind:value={pmi}
-          class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
-        />
-      </div>
-
       <div class="mb-6">
         <label
           for="hoa"
@@ -338,55 +339,100 @@
           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
         />
       </div>
+      {#if isPMIApplicable}
+        <div class="mb-6">
+          <label
+            for="pmi"
+            class="flex justify-between items-center mb-2 font-medium text-gray-700"
+          >
+            <span class="text-lg">Monthly PMI</span>
+            <span class="font-semibold text-gray-900"
+              >$
+              <input
+                id="pmi-input"
+                type="number"
+                bind:value={pmi}
+                class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              />
+            </span>
+          </label>
+          <input
+            id="pmi"
+            type="range"
+            min="0"
+            max="2000"
+            step="1"
+            bind:value={pmi}
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          />
+        </div>
+      {:else}
+        <div class="mb-6">
+          <div
+            class="p-4 text-center bg-green-50 border border-green-400 rounded-lg"
+          >
+            <p class="text-green-600 text-base">
+              Private Mortgage Insurance (PMI) is not required because your
+              Loan-to-Value (LTV) is greater than 80%
+            </p>
+          </div>
+        </div>
+      {/if}
     </div>
 
     <div class="sticky top-8 h-fit">
-      <h2 class="text-3xl font-semibold mb-5 text-gray-800 text-center">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800 text-center">
         Monthly Payment
       </h2>
-      <div class="text-5xl font-bold text-green-600 mb-8 text-center">
+      <div class="text-5xl font-bold text-green-600 mb-10 text-center">
         {formatCurrencyDetailed(totalMonthlyPayment)}
       </div>
 
       <div class="border bg-white border-gray-200 rounded-lg p-4 mb-8">
-        <div class="flex justify-between py-3 border-b border-gray-100">
+        <div class="flex justify-between py-3">
           <span class="text-gray-600 text-lg">Principal & Interest</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyPrincipalInterest)}</span
           >
         </div>
-        <div class="flex justify-between py-3 border-b border-gray-100">
+        <div class="flex justify-between py-3 border-t border-gray-100">
           <span class="text-gray-600 text-lg">Property Tax</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyPropertyTax)}</span
           >
         </div>
-        <div class="flex justify-between py-3 border-b border-gray-100">
+        <div class="flex justify-between py-3 border-t border-gray-100">
           <span class="text-gray-600 text-lg">Home Insurance</span>
           <span class="font-semibold text-gray-900"
             >{formatCurrencyDetailed(monthlyInsurance)}</span
           >
         </div>
-        {#if pmi > 0}
-          <div class="flex justify-between py-3">
-            <span class="text-gray-600 text-lg">PMI</span>
-            <span class="font-semibold text-gray-900"
-              >{formatCurrencyDetailed(pmi)}</span
-            >
-          </div>
-        {/if}
         {#if hoa > 0}
-          <div class="flex justify-between py-3">
+          <div class="flex justify-between py-3 border-t border-gray-100">
             <span class="text-gray-600 text-lg">HOA</span>
             <span class="font-semibold text-gray-900"
               >{formatCurrencyDetailed(hoa)}</span
             >
           </div>
         {/if}
+        {#if isPMIApplicable && pmi > 0}
+          <div class="flex justify-between py-3 border-t border-gray-100">
+            <span class="text-gray-600 text-lg">PMI</span>
+            <span class="font-semibold text-gray-900"
+              >{formatCurrencyDetailed(pmi)}</span
+            >
+          </div>
+          <div class="text-sm text-gray-500">
+            <p>
+              PMI automatically ends after {monthPMIStops} payments when Loan-to-Value
+              (LTV) reaches 78%.
+            </p>
+          </div>
+        {/if}
       </div>
 
       <h3 class="text-2xl font-semibold mb-6 text-gray-800">Loan Summary</h3>
-      <div class="border bg-white border-gray-200 rounded-lg p-4 mb-8">
+      <div class="border bg-white border-gray-200 rounded-lg p-4 mb-6">
         <div class="flex justify-between py-3 border-b border-gray-100">
           <span class="text-gray-600 text-lg">Loan Amount</span>
           <span class="font-semibold text-gray-900"
