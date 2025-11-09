@@ -119,7 +119,7 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Home Price</span>
-          <span class="font-semibold text-gray-900"
+          <span class="text-gray-900"
             >$
             <!-- field-sizing-content tailwind property needs to be looked at again once webkit supports it -->
             <input
@@ -148,14 +148,14 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Down Payment</span>
-          <span class="font-semibold text-gray-900"
+          <span class="text-gray-900"
             >$
             <input
               id="down-payment-input"
               type="number"
               inputmode="numeric"
               bind:value={downPayment}
-              class="w-32 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-32 px-2 border border-gray-300 bg-white rounded text-right"
             />
           </span>
         </label>
@@ -185,7 +185,7 @@
             inputmode="decimal"
             step="0.1"
             bind:value={interestRate}
-            class="w-18 px-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
+            class="w-18 px-2 border border-gray-300 bg-white rounded text-right mr-1"
           />
         </label>
         <input
@@ -205,7 +205,7 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Loan Term</span>
-          <span class="font-semibold text-gray-900">{loanTerm} years</span>
+          <span class="text-gray-900">{loanTerm} years</span>
         </label>
         <input
           id="loan-term"
@@ -248,14 +248,14 @@
             class="flex justify-between items-center mb-2 font-medium text-gray-700"
           >
             <span class="text-base text-gray-600">Annual Amount</span>
-            <span class="font-semibold text-gray-900"
+            <span class="text-gray-900"
               >$
               <input
                 id="property-tax-fixed-input"
                 type="number"
                 inputmode="numeric"
                 bind:value={propertyTax}
-                class="w-24 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-24 px-2 border border-gray-300 bg-white rounded text-right"
               />
             </span>
           </label>
@@ -274,7 +274,7 @@
             class="flex justify-between items-center mb-2 font-medium text-gray-700"
           >
             <span class="text-base text-gray-600">Tax Rate</span>
-            <span class="font-semibold text-gray-900"
+            <span class="text-gray-900"
               >{formatPercent(propertyTaxPercent)} ({formatCurrency(
                 annualPropertyTax,
               )}/year)</span
@@ -298,14 +298,14 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Annual Home Insurance</span>
-          <span class="font-semibold text-gray-900"
+          <span class="text-gray-900"
             >$
             <input
               id="home-insurance-input"
               type="number"
               inputmode="numeric"
               bind:value={homeInsurance}
-              class="w-24 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-24 px-2 border border-gray-300 bg-white rounded text-right"
             />
           </span>
         </label>
@@ -325,14 +325,14 @@
           class="flex justify-between items-center mb-2 font-medium text-gray-700"
         >
           <span class="text-lg">Monthly HOA</span>
-          <span class="font-semibold text-gray-900"
+          <span class="text-gray-900"
             >$
             <input
               id="hoa-input"
               type="number"
               inputmode="numeric"
               bind:value={hoa}
-              class="w-20 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-20 px-2 border border-gray-300 bg-white rounded text-right"
             />
           </span>
         </label>
@@ -353,14 +353,14 @@
             class="flex justify-between items-center mb-2 font-medium text-gray-700"
           >
             <span class="text-lg">Monthly PMI</span>
-            <span class="font-semibold text-gray-900"
+            <span class="text-gray-900"
               >$
               <input
                 id="pmi-input"
                 type="number"
                 inputmode="numeric"
                 bind:value={pmi}
-                class="w-20 px-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-20 px-2 border border-gray-300 bg-white rounded text-right"
               />
             </span>
           </label>
