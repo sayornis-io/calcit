@@ -121,11 +121,13 @@
           <span class="text-lg">Home Price</span>
           <span class="font-semibold text-gray-900"
             >$
+            <!-- field-sizing-content tailwind property needs to be looked at again once webkit supports it -->
             <input
               id="loan-amount-input"
               type="number"
+              inputmode="numeric"
               bind:value={loanAmount}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded"
+              class="w-32 pl-2 border border-gray-300 bg-white rounded text-right"
             />
           </span>
         </label>
@@ -151,8 +153,9 @@
             <input
               id="down-payment-input"
               type="number"
+              inputmode="numeric"
               bind:value={downPayment}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-32 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -179,9 +182,10 @@
           <input
             id="interest-rate-input"
             type="number"
+            inputmode="decimal"
             step="0.1"
             bind:value={interestRate}
-            class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
+            class="w-18 pl-2 border border-gray-300 bg-white rounded text-left font-semibold text-gray-900 mr-1"
           />
         </label>
         <input
@@ -249,8 +253,9 @@
               <input
                 id="property-tax-fixed-input"
                 type="number"
+                inputmode="numeric"
                 bind:value={propertyTax}
-                class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-24 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
               />
             </span>
           </label>
@@ -298,8 +303,9 @@
             <input
               id="home-insurance-input"
               type="number"
+              inputmode="numeric"
               bind:value={homeInsurance}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-24 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -324,8 +330,9 @@
             <input
               id="hoa-input"
               type="number"
+              inputmode="numeric"
               bind:value={hoa}
-              class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+              class="w-20 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
             />
           </span>
         </label>
@@ -351,8 +358,9 @@
               <input
                 id="pmi-input"
                 type="number"
+                inputmode="numeric"
                 bind:value={pmi}
-                class="field-sizing-content pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
+                class="w-20 pl-2 border border-gray-300 bg-white rounded text-right font-semibold text-gray-900"
               />
             </span>
           </label>
