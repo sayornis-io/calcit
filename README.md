@@ -1,6 +1,6 @@
 # CalcIt.io
 
-A collection of useful calculators built with Svelte 5, TypeScript, Tailwind, and Vite.
+A collection of useful calculators built with Svelte 5, Tailwind, TypeScript, and Vite.
 
 ## Getting Started
 
@@ -29,11 +29,6 @@ pnpm dev
 
 The app will be available at `http://localhost:5173`
 
-## Available Scripts
-
-- `pnpm dev` - Start the development server with hot module replacement
-- `pnpm build` - Build the project for production
-- `pnpm preview` - Preview the production build locally
 
 ## Project Structure
 
@@ -44,6 +39,7 @@ calcit/
 │   ├── main.ts                    # Entry point
 │   ├── app.css                    # Global styles (Tailwind)
 │   ├── lib/
+│   │   ├── AmortizationTable.svelte       # Used in MortgageCalculator.svelte
 │   │   ├── MortgageCalculator.svelte      # Mortgage payment calculator
 │   │   ├── PartnershipCalculator.svelte   # Partnership distribution calculator
 │   │   └── SimpleCalculator.svelte        # Basic arithmetic calculator
@@ -59,18 +55,10 @@ calcit/
 ## Technology Stack
 
 - **[Svelte 5](https://svelte.dev/)**
+- **[Tailwind CSS](https://tailwindcss.com/)**
 - **[TypeScript](https://www.typescriptlang.org/)**
 - **[Vite](https://vitejs.dev/)**
-- **[Tailwind CSS](https://tailwindcss.com/)**
 - **[pnpm](https://pnpm.io/)**
-
-## Features
-
-- **Mortgage Calculator** - Calculate monthly payments with taxes, insurance, PMI, and HOA
-- **Partnership Calculator** - Distribute project costs and loans among partners
-- **Simple Calculator** - Basic arithmetic operations
-- **Responsive Design** - Works on desktop and mobile devices
-- **Dark Mode** - Built with Tailwind's dark color palette
 
 ## IDE Setup
 
