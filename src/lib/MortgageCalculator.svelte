@@ -106,7 +106,7 @@
   });
 </script>
 
-<div class="w-full max-w-7xl mx-auto lg:px-4 md:py-8 pb-8">
+<div class="w-full max-w-7xl mx-auto md:py-8">
   <div
     class="md:bg-white grid grid-cols-1 md:grid-cols-2 gap-8 md:p-8 md:rounded-xl md:shadow-lg"
   >
@@ -467,10 +467,13 @@
     </div>
   </div>
 </div>
-<div class="w-full lg:px-4 py-8 pb-8">
+<div class="w-full max-w-7xl mx-auto py-8 pb-8">
   <div class="md:bg-white md:rounded-xl md:shadow-lg overflow-hidden">
     <div class="md:p-8">
+<!--       <AmortizationChart {amortizationSchedule} /> -->
       <AmortizationTable {amortizationSchedule} />
     </div>
   </div>
 </div>
+
+
