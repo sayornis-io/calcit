@@ -8,13 +8,13 @@
   let distributionAmount = $state(32000);
 
   let partners = $state([
-    { percentage: 25, isDirectFunding: true, label: "Partner 1" },
-    { percentage: 25, isDirectFunding: false, label: "Partner 2" },
-    { percentage: 17.5, isDirectFunding: false, label: "Partner 3" },
-    { percentage: 19.3125, isDirectFunding: true, label: "Partner 4" },
-    { percentage: 8.5, isDirectFunding: true, label: "Partner 5" },
-    { percentage: 2.8125, isDirectFunding: true, label: "Partner 6" },
-    { percentage: 1.875, isDirectFunding: true, label: "Partner 7" },
+    { percentage: 25, isLoanParticipant: false, label: "Partner 1" },
+    { percentage: 25, isLoanParticipant: true, label: "Partner 2" },
+    { percentage: 17.5, isLoanParticipant: true, label: "Partner 3" },
+    { percentage: 19.3125, isLoanParticipant: false, label: "Partner 4" },
+    { percentage: 8.5, isLoanParticipant: false, label: "Partner 5" },
+    { percentage: 2.8125, isLoanParticipant: false, label: "Partner 6" },
+    { percentage: 1.875, isLoanParticipant: false, label: "Partner 7" },
   ]);
 
   function addPartner() {
@@ -22,7 +22,7 @@
       ...partners,
       {
         percentage: 0,
-        isDirectFunding: false,
+        isLoanParticipant: false,
         label: `Partner ${partners.length + 1}`,
       },
     ];
@@ -41,7 +41,7 @@
     partners.map((p) => {
       const percentage = p.percentage || 0;
       const share = (percentage / 100) * totalProjectCost;
-      const directContribution = p.isDirectFunding ? share : 0;
+      const directContribution = p.isLoanParticipant ? 0 : share;
       return { ...p, share, directContribution };
     }),
   );
@@ -61,10 +61,10 @@
   let totalInterest = $derived(totalPaid - loanAmount);
 
   let directFundingPartners = $derived(
-    partners.filter((p) => p.isDirectFunding),
+    partners.filter((p) => !p.isLoanParticipant),
   );
   let loanParticipatingPartners = $derived(
-    partners.filter((p) => !p.isDirectFunding),
+    partners.filter((p) => p.isLoanParticipant),
   );
   let participatingTotal = $derived(
     loanParticipatingPartners.reduce((sum, p) => sum + (p.percentage || 0), 0),
@@ -81,11 +81,11 @@
     partners.map((partner) => {
       const percentage = partner.percentage || 0;
       const share = (percentage / 100) * totalProjectCost;
-      const directContribution = partner.isDirectFunding ? share : 0;
+      const directContribution = partner.isLoanParticipant ? 0 : share;
       const originalDistribution =
         (percentage / 100) * originalDistributionAmount;
 
-      if (partner.isDirectFunding) {
+      if (!partner.isLoanParticipant) {
         // Direct funding partner gets their normal distribution, no loan payment
         const distribution = (percentage / 100) * distributionAmount;
         const paymentReturnDeduction = distribution - originalDistribution;
@@ -288,55 +288,60 @@
     </div>
 
     <!-- Partners -->
-    <div class="bg-white rounded-lg shadow p-6">
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold text-gray-800">Partners</h2>
         <button
           onclick={addPartner}
-          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm font-medium"
+          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
         >
           Add Partner
         </button>
       </div>
 
-      <div class="space-y-3 max-h-96 overflow-y-auto">
+      <div class="space-y-3 flex-1 overflow-y-auto min-h-0">
         {#each partners as partner, index}
-          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-md">
+          <div class="flex items-center gap-3">
             <input
               type="text"
               bind:value={partner.label}
-              class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+              class="flex-1 px-3 py-2 border border-gray-300 bg-white rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Partner name"
             />
             <input
               type="number"
               step="0.0001"
               bind:value={partner.percentage}
-              class="w-24 px-3 py-2 border border-gray-300 rounded-md text-sm"
+              class="w-24 px-3 py-2 border border-gray-300 bg-white rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="%"
             />
-            <label class="flex items-center gap-2 text-sm whitespace-nowrap">
+            <label class="flex items-center gap-2 text-sm whitespace-nowrap cursor-pointer">
               <input
                 type="checkbox"
-                bind:checked={partner.isDirectFunding}
-                class="rounded border-gray-300"
+                bind:checked={partner.isLoanParticipant}
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
-              <span class="text-gray-700">Direct Funding</span>
+              <span class={partner.isLoanParticipant ? "text-blue-700 font-medium" : "text-gray-800 font-medium"}>
+                Loan Participant
+              </span>
             </label>
             <button
               onclick={() => removePartner(index)}
-              class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
+              class="px-3 py-2 text-red-600 hover:text-gray-500 bg-red-100 hover:bg-gray-100 rounded-md transition-colors text-sm disabled:opacity-50 cursor-pointer"
               disabled={partners.length === 1}
+              title="Remove partner"
             >
-              Remove
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
             </button>
           </div>
         {/each}
       </div>
 
-      <div class="mt-4 p-3 bg-gray-100 rounded-md">
+      <div class="mt-4 p-3 bg-gray-100 rounded-md border border-gray-200">
         <div class="flex justify-between text-sm">
-          <span class="font-medium">Total Percentage:</span>
+          <span class="font-medium text-gray-700">Total Percentage:</span>
           <span
             class={totalPercentage === 100
               ? "text-green-600 font-semibold"
@@ -393,7 +398,7 @@
       <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center gap-2 mb-4">
           <div class="w-1 h-6 bg-orange-500 rounded"></div>
-          <h3 class="text-lg font-semibold text-gray-800">Loan Analysis</h3>
+          <h3 class="text-xl font-semibold text-gray-800">Loan Analysis</h3>
         </div>
         <div class="space-y-4">
           <div class="bg-gray-100 rounded-lg p-4">
@@ -446,8 +451,8 @@
       <!-- Distribution Impact -->
       <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center gap-2 mb-4">
-          <div class="w-1 h-6 bg-blue-500 rounded"></div>
-          <h3 class="text-lg font-semibold text-gray-800">
+          <div class="w-1 h-6 bg-green-600 rounded"></div>
+          <h3 class="text-xl font-semibold text-gray-800">
             Distribution Analysis
           </h3>
         </div>
@@ -593,22 +598,22 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900"
               >
-                {result.isDirectFunding
+                {!result.isLoanParticipant
                   ? formatCurrency(result.directContribution)
                   : "-"}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm">
-                {#if result.isDirectFunding}
-                  <span
-                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"
-                  >
-                    Direct Funding
-                  </span>
-                {:else}
+                {#if result.isLoanParticipant}
                   <span
                     class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"
                   >
                     Loan Participant
+                  </span>
+                {:else}
+                  <span
+                    class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"
+                  >
+                    Direct Funding
                   </span>
                 {/if}
               </td>
@@ -616,9 +621,9 @@
                 {formatCurrency(result.originalDistribution)}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {result.isDirectFunding
-                  ? "N/A"
-                  : formatPercent(result.adjustedPercentage)}
+                {result.isLoanParticipant
+                  ? formatPercent(result.adjustedPercentage)
+                  : "N/A"}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">
                 <span
@@ -682,7 +687,7 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {formatPercent(
                 results
-                  .filter((r) => !r.isDirectFunding)
+                  .filter((r) => r.isLoanParticipant)
                   .reduce((sum, r) => sum + r.adjustedPercentage, 0),
               )}
             </td>
