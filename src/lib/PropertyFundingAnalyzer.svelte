@@ -274,9 +274,7 @@
         </div>
 
         <div>
-          <label
-            for="distributionAmount"
-            class="text-base text-gray-700 mb-1"
+          <label for="distributionAmount" class="text-base text-gray-700 mb-1"
             >New Distribution Amount ($)</label
           >
           <input
@@ -352,138 +350,169 @@
   </div>
 
   <!-- Summary Section -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Funding Summary -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Funding Breakdown
-      </h3>
-      <div class="space-y-3">
-                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
-          <span class="text-sm text-gray-600">Total Project Cost</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{formatCurrency(totalProjectCost)}</span
-          >
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Project Summary</h2>
+    <!-- Project Overview - Full Width Hero Card -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="text-sm text-gray-700 font-medium mb-1">
+            Total Project Cost
+          </div>
+          <div class="text-3xl font-bold text-gray-800">
+            {formatCurrency(totalProjectCost)}
+          </div>
         </div>
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Direct Contributions</span>
-          <span class="text-lg font-semibold text-green-600"
-            >{formatCurrency(totalDirectContributions)}</span
-          >
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="text-sm text-gray-700 font-medium mb-1">
+            Direct Funding
+          </div>
+          <div class="text-3xl font-bold text-green-600">
+            {formatCurrency(totalDirectContributions)}
+          </div>
+          <div class="text-xs text-gray-600 mt-1">
+            {formatPercent((totalDirectContributions / totalProjectCost) * 100)}
+            of total
+          </div>
         </div>
-        <div
-          class="flex justify-between items-center"
-        >
-          <span class="text-sm text-gray-600">Loan Amount Needed</span>
-          <span class="text-lg font-semibold text-red-600"
-            >{formatCurrency(loanAmount)}</span
-          >
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="text-sm text-gray-700 font-medium mb-1">
+            Loan Required
+          </div>
+          <div class="text-3xl font-bold text-red-600">
+            {formatCurrency(loanAmount)}
+          </div>
+          <div class="text-xs text-gray-600 mt-1">
+            {formatPercent((loanAmount / totalProjectCost) * 100)} of total
+          </div>
         </div>
       </div>
-      <div class="mt-4 pt-4 border-t border-gray-200">
-        <p class="text-xs text-gray-500">
-          <span class="font-medium"
-            >{formatPercent(
-              (totalDirectContributions / totalProjectCost) * 100,
-            )}</span
-          > directly funded
-        </p>
-      </div>
-    </div>
 
-    <!-- Loan Summary -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Loan Details</h3>
-      <div class="space-y-3">
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Interest Rate</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{formatPercent(interestRate)}</span
-          >
+    <!-- Detailed Breakdown - Two Columns -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Loan Impact -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-1 h-6 bg-orange-500 rounded"></div>
+          <h3 class="text-lg font-semibold text-gray-800">Loan Analysis</h3>
         </div>
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Loan Term</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{loanTermYears} years</span
-          >
-        </div>
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Monthly Payment</span>
-          <span class="text-lg font-semibold text-orange-600"
-            >{formatCurrency(monthlyPayment)}</span
-          >
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">Total Loan Cost</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{formatCurrency(totalPaid)}</span
-          >
-        </div>
-      </div>
-      <div class="mt-4 pt-4 border-t border-gray-200">
-        <p class="text-xs text-gray-500">
-          Total Interest: <span class="font-medium text-red-600"
-            >{formatCurrency(totalInterest)}</span
-          >
-        </p>
-      </div>
-    </div>
+        <div class="space-y-4">
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+              Monthly Payment
+            </div>
+            <div class="text-2xl font-bold text-orange-600">
+              {formatCurrency(monthlyPayment)}
+            </div>
+            <div class="text-xs text-gray-600 mt-1">
+              Shared by {loanParticipatingPartners.length} loan participant{loanParticipatingPartners.length !==
+              1
+                ? "s"
+                : ""}
+            </div>
+          </div>
 
-    <!-- Distribution Summary -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Distribution Summary
-      </h3>
-      <div class="space-y-3">
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Direct Funders</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{directFundingPartners.length}</span
-          >
-        </div>
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Loan Participants</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{loanParticipatingPartners.length}</span
-          >
-        </div>
-        <div
-          class="flex justify-between items-center pb-3 border-b border-gray-200"
-        >
-          <span class="text-sm text-gray-600">Original Distribution</span>
-          <span class="text-lg font-semibold text-gray-900"
-            >{formatCurrency(originalDistributionAmount)}</span
-          >
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-sm text-gray-600">New Distribution</span>
-          <span class="text-lg font-semibold text-blue-600"
-            >{formatCurrency(distributionAmount)}</span
-          >
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-xs text-gray-500 mb-1">Interest Rate</div>
+              <div class="text-lg font-semibold text-gray-900">
+                {formatPercent(interestRate)}
+              </div>
+            </div>
+            <div>
+              <div class="text-xs text-gray-500 mb-1">Loan Term</div>
+              <div class="text-lg font-semibold text-gray-900">
+                {loanTermYears} years
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-200">
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-gray-600">Total Repayment</span>
+              <span class="font-semibold text-gray-900"
+                >{formatCurrency(totalPaid)}</span
+              >
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Total Interest</span>
+              <span class="font-semibold text-red-600"
+                >{formatCurrency(totalInterest)}</span
+              >
+            </div>
+          </div>
         </div>
       </div>
-      <div class="mt-4 pt-4 border-t border-gray-200">
-        <p class="text-xs text-gray-500">
-          Change: <span
-            class={distributionAmount >= originalDistributionAmount
-              ? "font-medium text-green-600"
-              : "font-medium text-red-600"}
+
+      <!-- Distribution Impact -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-1 h-6 bg-blue-500 rounded"></div>
+          <h3 class="text-lg font-semibold text-gray-800">
+            Distribution Analysis
+          </h3>
+        </div>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="text-xs text-gray-500 mb-1">Direct Funders</div>
+              <div class="text-2xl font-bold text-green-600">
+                {directFundingPartners.length}
+              </div>
+              <div class="text-xs text-gray-600 mt-1">
+                Receive increased distributions
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="text-xs text-gray-500 mb-1">Loan Participants</div>
+              <div class="text-2xl font-bold text-blue-600">
+                {loanParticipatingPartners.length}
+              </div>
+              <div class="text-xs text-gray-600 mt-1">
+                Pay monthly loan portion
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4"
           >
-            {formatCurrency(distributionAmount - originalDistributionAmount)}
-          </span>
-        </p>
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+                  Original Distribution
+                </div>
+                <div class="text-xl font-semibold text-gray-700">
+                  {formatCurrency(originalDistributionAmount)}
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+                  New Distribution
+                </div>
+                <div class="text-xl font-semibold text-blue-600">
+                  {formatCurrency(distributionAmount)}
+                </div>
+              </div>
+            </div>
+            <div class="pt-3 border-t border-gray-300">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-medium text-gray-600">Net Change</span
+                >
+                <span
+                  class={distributionAmount >= originalDistributionAmount
+                    ? "text-lg font-bold text-green-600"
+                    : "text-lg font-bold text-red-600"}
+                >
+                  {distributionAmount >= originalDistributionAmount
+                    ? "+"
+                    : ""}{formatCurrency(
+                    distributionAmount - originalDistributionAmount,
+                  )}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
