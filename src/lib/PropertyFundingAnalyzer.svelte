@@ -396,8 +396,8 @@
           <h3 class="text-lg font-semibold text-gray-800">Loan Analysis</h3>
         </div>
         <div class="space-y-4">
-          <div class="bg-gray-50 rounded-lg p-4">
-            <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+          <div class="bg-gray-100 rounded-lg p-4">
+            <div class="text-xs uppercase tracking-wide text-gray-600 mb-1">
               Monthly Payment
             </div>
             <div class="text-2xl font-bold text-orange-600">
@@ -453,8 +453,8 @@
         </div>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
-            <div class="bg-gray-50 rounded-lg p-3">
-              <div class="text-xs text-gray-500 mb-1">Direct Funders</div>
+            <div class="bg-gray-100 rounded-lg p-3">
+              <div class="text-xs text-gray-600 mb-1">Direct Funders</div>
               <div class="text-2xl font-bold text-green-600">
                 {directFundingPartners.length}
               </div>
@@ -462,9 +462,9 @@
                 Receive increased distributions
               </div>
             </div>
-            <div class="bg-gray-50 rounded-lg p-3">
-              <div class="text-xs text-gray-500 mb-1">Loan Participants</div>
-              <div class="text-2xl font-bold text-blue-600">
+            <div class="bg-gray-100 rounded-lg p-3">
+              <div class="text-xs text-gray-600 mb-1">Loan Participants</div>
+              <div class="text-2xl font-bold text-green-600">
                 {loanParticipatingPartners.length}
               </div>
               <div class="text-xs text-gray-600 mt-1">
@@ -474,11 +474,11 @@
           </div>
 
           <div
-            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4"
+            class="bg-gray-100 rounded-lg p-4"
           >
             <div class="flex justify-between items-start mb-3">
               <div>
-                <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+                <div class="text-xs uppercase tracking-wide text-gray-600 mb-1">
                   Original Distribution
                 </div>
                 <div class="text-xl font-semibold text-gray-700">
@@ -486,7 +486,7 @@
                 </div>
               </div>
               <div class="text-right">
-                <div class="text-xs uppercase tracking-wide text-gray-500 mb-1">
+                <div class="text-xs uppercase tracking-wide text-gray-600 mb-1">
                   New Distribution
                 </div>
                 <div class="text-xl font-semibold text-blue-600">
@@ -519,8 +519,11 @@
 
   <!-- Results Section -->
   <div class="bg-white rounded-lg shadow overflow-hidden">
-    <div class="px-6 py-4 bg-gray-800 text-white">
-      <h2 class="text-xl font-semibold">Distribution Results</h2>
+    <div class="px-6 py-4 bg-white border-b border-gray-200">
+      <div class="flex items-center gap-2">
+        <div class="w-1 h-6 bg-blue-500 rounded"></div>
+        <h2 class="text-xl font-semibold text-gray-800">Individual Partner Analysis</h2>
+      </div>
     </div>
 
     <div class="overflow-x-auto">
