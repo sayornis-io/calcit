@@ -11,10 +11,10 @@
     { percentage: 25, isDirectFunding: true, label: "Partner 1" },
     { percentage: 25, isDirectFunding: false, label: "Partner 2" },
     { percentage: 17.5, isDirectFunding: false, label: "Partner 3" },
-    { percentage: 19.3125, isDirectFunding: false, label: "Partner 4" },
-    { percentage: 8.5, isDirectFunding: false, label: "Partner 5" },
-    { percentage: 2.8125, isDirectFunding: false, label: "Partner 6" },
-    { percentage: 1.875, isDirectFunding: false, label: "Partner 7" },
+    { percentage: 19.3125, isDirectFunding: true, label: "Partner 4" },
+    { percentage: 8.5, isDirectFunding: true, label: "Partner 5" },
+    { percentage: 2.8125, isDirectFunding: true, label: "Partner 6" },
+    { percentage: 1.875, isDirectFunding: true, label: "Partner 7" },
   ]);
 
   function addPartner() {
@@ -33,13 +33,13 @@
   }
 
   let totalPercentage = $derived(
-    partners.reduce((sum, p) => sum + (parseFloat(p.percentage) || 0), 0),
+    partners.reduce((sum, p) => sum + (p.percentage || 0), 0),
   );
 
   // Calculate each partner's share and direct contributions
   let partnerShares = $derived(
     partners.map((p) => {
-      const percentage = parseFloat(p.percentage) || 0;
+      const percentage = p.percentage || 0;
       const share = (percentage / 100) * totalProjectCost;
       const directContribution = p.isDirectFunding ? share : 0;
       return { ...p, share, directContribution };
@@ -67,10 +67,7 @@
     partners.filter((p) => !p.isDirectFunding),
   );
   let participatingTotal = $derived(
-    loanParticipatingPartners.reduce(
-      (sum, p) => sum + (parseFloat(p.percentage) || 0),
-      0,
-    ),
+    loanParticipatingPartners.reduce((sum, p) => sum + (p.percentage || 0), 0),
   );
 
   // Calculate suggested distribution to keep loan participants at near-original levels
@@ -82,7 +79,7 @@
 
   let results = $derived(
     partners.map((partner) => {
-      const percentage = parseFloat(partner.percentage) || 0;
+      const percentage = partner.percentage || 0;
       const share = (percentage / 100) * totalProjectCost;
       const directContribution = partner.isDirectFunding ? share : 0;
       const originalDistribution =
@@ -130,8 +127,7 @@
       } else {
         // Loan participating partners
         const directFundingDistribution = directFundingPartners.reduce(
-          (sum, p) =>
-            sum + ((parseFloat(p.percentage) || 0) / 100) * distributionAmount,
+          (sum, p) => sum + ((p.percentage || 0) / 100) * distributionAmount,
           0,
         );
         const remainingDistribution =
@@ -196,22 +192,6 @@
             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
         </div>
-
-        <div class="p-3 bg-gray-100 rounded-md">
-          <div class="flex justify-between text-sm">
-            <span class="font-medium text-gray-700">Direct Contributions:</span>
-            <span class="font-semibold text-gray-900"
-              >{formatCurrency(totalDirectContributions)}</span
-            >
-          </div>
-          <div class="flex justify-between text-sm mt-1">
-            <span class="font-medium text-gray-700">Loan Amount Needed:</span>
-            <span class="font-semibold text-blue-600"
-              >{formatCurrency(loanAmount)}</span
-            >
-          </div>
-        </div>
-
         <div>
           <label
             for="interestRate"
@@ -224,7 +204,7 @@
               inputmode="decimal"
               step="0.1"
               bind:value={interestRate}
-            class="w-18 px-2 border border-gray-300 bg-white rounded text-right mr-1"
+              class="w-20 px-2 border border-gray-300 bg-white rounded text-right mr-1"
             />
           </label>
         </div>
@@ -232,95 +212,79 @@
         <div>
           <label
             for="loanTermYears"
-            class="block text-sm font-medium text-gray-700 mb-1"
-            >Loan Term (Years)</label
+            class="flex justify-between items-center mb-6 font-medium text-gray-700"
+          >
+            <span class="text-lg">Loan Term (Years)</span>
+            <input
+              id="loanTermYears-input"
+              type="number"
+              inputmode="numeric"
+              step="1"
+              bind:value={loanTermYears}
+              class="w-18 px-2 border border-gray-300 bg-white rounded text-right mr-1"
+            />
+          </label>
+        </div>
+
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+          Distribution Amounts
+        </h2>
+
+        <div>
+          <label
+            for="originalDistributionAmount"
+            class="text-base text-gray-700 mb-1"
+            >Original Distribution (Before Loan) ($)</label
           >
           <input
-            id="loanTermYears"
+            id="originalDistributionAmount"
             type="number"
-            bind:value={loanTermYears}
+            bind:value={originalDistributionAmount}
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        <div class="space-y-3 p-4 bg-gray-50 rounded-md border border-gray-200">
-          <h3 class="text-sm font-semibold text-gray-800">
-            Distribution Amounts
-          </h3>
-
-          <div>
-            <label
-              for="originalDistributionAmount"
-              class="block text-xs font-medium text-gray-600 mb-1"
-              >Original Distribution (Before Loan) ($)</label
-            >
+        <div>
+          <label
+            for="suggestedDistribution"
+            class="text-base text-gray-700 mb-1"
+            >Suggested Distribution (To Maintain Loan Participant Levels)</label
+          >
+          <div class="flex gap-2">
             <input
-              id="originalDistributionAmount"
+              id="suggestedDistribution"
               type="number"
-              bind:value={originalDistributionAmount}
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              value={suggestedDistribution.toFixed(2)}
+              readonly
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700"
             />
-          </div>
-
-          <div>
-            <label
-              for="suggestedDistribution"
-              class="block text-xs font-medium text-gray-600 mb-1"
-              >Suggested Distribution (To Maintain Loan Participant Levels)</label
+            <button
+              onclick={() =>
+                (distributionAmount =
+                  Math.round(suggestedDistribution * 100) / 100)}
+              class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-base whitespace-nowrap"
             >
-            <div class="flex gap-2">
-              <input
-                id="suggestedDistribution"
-                type="number"
-                value={suggestedDistribution.toFixed(2)}
-                readonly
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 text-sm"
-              />
-              <button
-                onclick={() =>
-                  (distributionAmount =
-                    Math.round(suggestedDistribution * 100) / 100)}
-                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-medium whitespace-nowrap"
-              >
-                Use This
-              </button>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">
-              This amount keeps loan participants near their original
-              distribution levels after loan payments
-            </p>
+              Use This
+            </button>
           </div>
-
-          <div>
-            <label
-              for="distributionAmount"
-              class="block text-xs font-medium text-gray-600 mb-1"
-              >New Distribution Amount ($)</label
-            >
-            <input
-              id="distributionAmount"
-              type="number"
-              bind:value={distributionAmount}
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-            />
-          </div>
+          <p class="text-sm text-gray-500 mt-1">
+            This amount keeps loan participants near their original distribution
+            levels after loan payments
+          </p>
         </div>
-      </div>
 
-      <div class="mt-6 p-4 bg-blue-50 rounded-md">
-        <div class="text-sm text-gray-700 space-y-1">
-          <div class="flex justify-between">
-            <span>Monthly Payment:</span>
-            <span class="font-semibold">{formatCurrency(monthlyPayment)}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Total Amount Paid:</span>
-            <span class="font-semibold">{formatCurrency(totalPaid)}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Total Interest:</span>
-            <span class="font-semibold">{formatCurrency(totalInterest)}</span>
-          </div>
+        <div>
+          <label
+            for="distributionAmount"
+            class="text-base text-gray-700 mb-1"
+            >New Distribution Amount ($)</label
+          >
+          <input
+            id="distributionAmount"
+            type="number"
+            bind:value={distributionAmount}
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
         </div>
       </div>
     </div>
@@ -383,6 +347,143 @@
             {totalPercentage.toFixed(4)}%
           </span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Funding Summary -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Funding Breakdown
+      </h3>
+      <div class="space-y-3">
+                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+          <span class="text-sm text-gray-600">Total Project Cost</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{formatCurrency(totalProjectCost)}</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Direct Contributions</span>
+          <span class="text-lg font-semibold text-green-600"
+            >{formatCurrency(totalDirectContributions)}</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center"
+        >
+          <span class="text-sm text-gray-600">Loan Amount Needed</span>
+          <span class="text-lg font-semibold text-red-600"
+            >{formatCurrency(loanAmount)}</span
+          >
+        </div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <p class="text-xs text-gray-500">
+          <span class="font-medium"
+            >{formatPercent(
+              (totalDirectContributions / totalProjectCost) * 100,
+            )}</span
+          > directly funded
+        </p>
+      </div>
+    </div>
+
+    <!-- Loan Summary -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Loan Details</h3>
+      <div class="space-y-3">
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Interest Rate</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{formatPercent(interestRate)}</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Loan Term</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{loanTermYears} years</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Monthly Payment</span>
+          <span class="text-lg font-semibold text-orange-600"
+            >{formatCurrency(monthlyPayment)}</span
+          >
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-gray-600">Total Loan Cost</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{formatCurrency(totalPaid)}</span
+          >
+        </div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <p class="text-xs text-gray-500">
+          Total Interest: <span class="font-medium text-red-600"
+            >{formatCurrency(totalInterest)}</span
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- Distribution Summary -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Distribution Summary
+      </h3>
+      <div class="space-y-3">
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Direct Funders</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{directFundingPartners.length}</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Loan Participants</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{loanParticipatingPartners.length}</span
+          >
+        </div>
+        <div
+          class="flex justify-between items-center pb-3 border-b border-gray-200"
+        >
+          <span class="text-sm text-gray-600">Original Distribution</span>
+          <span class="text-lg font-semibold text-gray-900"
+            >{formatCurrency(originalDistributionAmount)}</span
+          >
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-gray-600">New Distribution</span>
+          <span class="text-lg font-semibold text-blue-600"
+            >{formatCurrency(distributionAmount)}</span
+          >
+        </div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <p class="text-xs text-gray-500">
+          Change: <span
+            class={distributionAmount >= originalDistributionAmount
+              ? "font-medium text-green-600"
+              : "font-medium text-red-600"}
+          >
+            {formatCurrency(distributionAmount - originalDistributionAmount)}
+          </span>
+        </p>
       </div>
     </div>
   </div>
