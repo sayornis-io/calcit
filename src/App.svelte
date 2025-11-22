@@ -1,6 +1,6 @@
 <script lang="ts">
   import MortgageCalculator from './lib/MortgageCalculator.svelte'
-  import PartnershipCalculator from './lib/PartnershipCalculator.svelte'
+  import PartnershipCalculator from './lib/PropertyFundingAnalyzer.svelte'
   import SimpleCalculator from './lib/SimpleCalculator.svelte'
 
   const calculators = [
