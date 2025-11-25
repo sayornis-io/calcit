@@ -42,24 +42,33 @@
   );
   let monthlyPropertyTax = $derived(annualPropertyTax / 12);
   let monthlyInsurance = $derived(homeInsurance / 12);
-  let totalMonthlyPayment = $derived(
-    monthlyPrincipalInterest +
-      monthlyPropertyTax +
-      monthlyInsurance +
-      pmi +
-      hoa,
-  );
-
-  let totalInterestPaid = $derived(
-    monthlyPrincipalInterest * numberOfPayments - principal,
-  );
-  let totalPaid = $derived(monthlyPrincipalInterest * numberOfPayments);
 
   // Calculate current LTV (Loan-to-Value)
   let currentLTV = $derived(principal / loanAmount);
 
   // Check if PMI is currently applicable (LTV > 80%)
   let isPMIApplicable = $derived(currentLTV > 0.8);
+
+  let totalMonthlyPayment = $derived.by(() => {
+    if (isPMIApplicable) {
+      return (
+        monthlyPrincipalInterest +
+        monthlyPropertyTax +
+        monthlyInsurance +
+        pmi +
+        hoa
+      );
+    } 
+      return (
+        monthlyPrincipalInterest + monthlyPropertyTax + monthlyInsurance + hoa
+      );
+    
+  });
+
+  let totalInterestPaid = $derived(
+    monthlyPrincipalInterest * numberOfPayments - principal,
+  );
+  let totalPaid = $derived(monthlyPrincipalInterest * numberOfPayments);
 
   // Calculate when PMI stops (at 78% LTV or lower)
   let monthPMIStops = $derived.by(() => {
@@ -470,10 +479,8 @@
 <div class="w-full max-w-7xl mx-auto py-8 pb-8">
   <div class="md:bg-white md:rounded-xl md:shadow-lg overflow-hidden">
     <div class="md:p-8">
-<!--       <AmortizationChart {amortizationSchedule} /> -->
+      <!--       <AmortizationChart {amortizationSchedule} /> -->
       <AmortizationTable {amortizationSchedule} />
     </div>
   </div>
 </div>
-
-
