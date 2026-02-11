@@ -2,11 +2,13 @@
   import MortgageCalculator from './lib/MortgageCalculator.svelte'
   import PartnershipCalculator from './lib/PropertyFundingAnalyzer.svelte'
   import SimpleCalculator from './lib/SimpleCalculator.svelte'
+  import PTOCalculator from './lib/PTOCalculator.svelte'
 
   const calculators = [
     { name: 'Mortgage', component: MortgageCalculator },
     { name: 'Partnership', component: PartnershipCalculator },
     { name: 'Simple', component: SimpleCalculator },
+    { name: 'PTO', component: PTOCalculator },
   ]
 
   let active = $state(0)
