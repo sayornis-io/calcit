@@ -6,16 +6,16 @@
   } from "../utils/formatters";
   import AmortizationTable from "./AmortizationTable.svelte";
 
-  let loanAmount = $state(640000);
-  let interestRate = $state(5.6);
+  let loanAmount = $state(805000);
+  let interestRate = $state(6.25);
   let loanTerm = $state(30);
-  let downPayment = $state(40000);
+  let downPayment = $state(65000);
   let propertyTax = $state(6400);
-  let propertyTaxPercent = $state(1.17);
+  let propertyTaxPercent = $state(1.14);
   let isPropertyTaxFixed = $state(false);
-  let homeInsurance = $state(3000);
-  let pmi = $state(0);
-  let hoa = $state(277);
+  let homeInsurance = $state(2174);
+  let pmi = $state(164);
+  let hoa = $state(0);
 
   // Ensure down payment never exceeds loan amount
   $effect(() => {
